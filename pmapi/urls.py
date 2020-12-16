@@ -22,6 +22,7 @@ router = routers.DefaultRouter()
 router.register(r'stocks', views.StockViewSet)
 router.register(r'positions', views.PositionViewSet)
 router.register(r'portfolios', views.PortfolioViewSet)
+router.register(r'uploadPosition', views.UploadPositionViewSet, basename='uploadPosition')
 
 urlpatterns = [
     path('', include(router.urls)),
