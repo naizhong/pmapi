@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateResponseMixin
 import rest_framework
+from rest_framework import response
 from rest_framework.viewsets import ModelViewSet,ViewSet
 from .models import Portfolio, Stock, Position
 from rest_framework.response import Response
 from .serializers import PortfolioSerializer, StockSerializer, PositionSerializer, PositionFileSerializer
 import pandas as pd
 from django.forms import Form
+from rest_framework.decorators import action
 
 # Create your views here.
 class StockViewSet(ModelViewSet):
@@ -16,6 +18,10 @@ class StockViewSet(ModelViewSet):
 class PositionViewSet(ModelViewSet):
     serializer_class = PositionSerializer
     queryset = Position.objects.all()
+
+    def list(self, request):
+        portfolio = request.GET['portfolio']
+        return Response(PositionSerializer(Position.objects.filter(portfolio=portfolio), many=True).data)
 
 class PortfolioViewSet(ModelViewSet):
     serializer_class = PortfolioSerializer
